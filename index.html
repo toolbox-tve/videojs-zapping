@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <title>videojs-zapping Demo</title>
   <link href="node_modules/video.js/dist/video-js.css" rel="stylesheet">
-  
+  <link rel="stylesheet" href="https://unpkg.com/flickity@2/dist/flickity.min.css">
+  <link href="./css/videojs-zapping.css" rel="stylesheet">
 </head>
 <body>
-  <video id="videojs-zapping-player" class="video-js vjs-default-skin" controls>
+  <video id="videojs-zapping-player" class="video-js vjs-default-skin" autoplay muted controls>
     <source src="//vjs.zencdn.net/v/oceans.mp4" type='video/mp4'>
     <source src="//vjs.zencdn.net/v/oceans.webm" type='video/webm'>
   </video>
@@ -15,7 +16,7 @@
     <li><a href="test/">Run unit tests in browser.</a></li>
     <li><a href="docs/api/">Read generated docs.</a></li>
   </ul>
-  
+
   <script src="node_modules/video.js/dist/video.js"></script>
   <script src="dist/videojs-zapping.js"></script>
   <script>

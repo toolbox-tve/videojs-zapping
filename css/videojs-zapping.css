@@ -1,0 +1,144 @@
+.vjs-zapping-holder {
+  position: absolute;
+  width: 100%;
+  bottom: 30px;
+  text-align: center;
+  background: rgba(43, 51, 63, 0.75);
+
+  height: 0;
+  overflow: hidden;
+  z-index: 10;
+
+  -webkit-transition: height 0.25s ease-out;
+  -moz-transition: height 0.25s ease-out;
+  -ms-transition: height 0.25s ease-out;
+  -o-transition: height 0.25s ease-out;
+  transition: height 0.25s ease-out;
+}
+
+.vjs-zapping-holder.active {
+  height: auto;
+  -webkit-transition: height 0.25s ease-in;
+  -moz-transition: height 0.25s ease-in;
+  -ms-transition: height 0.25s ease-in;
+  -o-transition: height 0.25s ease-in;
+  transition: height 0.25s ease-in;
+}
+
+.vjs-carousel-viewport {
+  position: relative;
+}
+
+.vjs-default-skin .vjs-zapping-button {
+  cursor: pointer;
+}
+
+.vjs-zapping-button:before {
+  content: "\e00d";
+}
+
+.vjs-user-inactive.vjs-playing .vjs-fade-out {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: visibility 1.5s, opacity 1.5s !important;
+  -moz-transition: visibility 1.5s, opacity 1.5s !important;
+  -ms-transition: visibility 1.5s, opacity 1.5s !important;
+  -o-transition: visibility 1.5s, opacity 1.5s !important;
+  transition: visibility 1.5s, opacity 1.5s !important;
+}
+
+.vjs-default-skin.vjs-user-inactive.vjs-playing .vjs-zapping-holder {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+
+  -webkit-transition: visibility 1.5s, opacity 1.5s !important;
+  -moz-transition: visibility 1.5s, opacity 1.5s !important;
+  -ms-transition: visibility 1.5s, opacity 1.5s !important;
+  -o-transition: visibility 1.5s, opacity 1.5s !important;
+  transition: visibility 1.5s, opacity 1.5s !important;
+}
+
+.icon-videojs-carousel-toggle:before {
+  content: "\f039";
+}
+.icon-videojs-carousel-left:before {
+  content: "\f053";
+}
+.icon-videojs-carousel-right:before {
+  content: "\f054";
+}
+
+* { box-sizing: border-box; }
+
+body { font-family: sans-serif; }
+
+.vjs-carousel-viewport {
+  margin: 0 0px;
+}
+
+.carousel-cell {
+  width: auto;
+  height: 114px;
+  margin-right: 5px;
+  background: rgb(157, 158, 157);
+  border-radius: 5px;
+  counter-increment: gallery-cell;
+}
+
+/* cell number */
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  /* content: counter(gallery-cell); */
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
+.carousel-img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.carousel-img.is-selected {
+  -webkit-box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
+  -moz-box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
+  box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background: rgba(43, 51, 63, 0.85);
+}
+
+/* smaller, dark, rounded square */
+.flickity-prev-next-button {
+  width: 30px;
+  height: 114px;
+  border-radius: 0px;
+}
+
+button.flickity-prev-next-button {
+  background: rgba(43, 51, 63, 0.75);
+}
+
+.flickity-prev-next-button:hover {
+  background: rgba(53, 63, 78, 0.75);
+}
+/* arrow color */
+.flickity-prev-next-button .arrow {
+  fill: white;
+}
+.flickity-prev-next-button.no-svg {
+  color: white;
+}
+/* position outside */
+.flickity-prev-next-button.previous {
+  left: 0px;
+}
+.flickity-prev-next-button.next {
+  right: 0px;
+}
