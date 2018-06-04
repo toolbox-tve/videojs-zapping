@@ -144,8 +144,8 @@ class Carousel {
       this.currentVideoIndex = index;
       this.close();
       if (config.src !== undefined) {
-        player.src(config.src);
-        player.play();
+        this.player.src(config.src);
+        this.player.play();
       } else {
         window.location = config.url;
       }
