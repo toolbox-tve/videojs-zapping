@@ -1,12 +1,13 @@
 'use strict';
 import Flickity from 'flickity';
-
+// import rp from 'request-promise';
 class Carousel {
   constructor(player, options) {
     this.player = player;
+    this.options = options;
 
     this.controlBarButton = document.createElement('div');
-    this.controlBarButton.className = 'vjs-button vjs-control vjs-related-carousel-button icon-videojs-carousel-toggle';
+    this.controlBarButton.className = 'vjs-button vjs-control vjs-zapping-button icon-videojs-carousel-toggle';
 
     this.holderDiv = document.createElement('div');
     this.holderDiv.className = 'vjs-zapping-holder';
@@ -62,24 +63,33 @@ class Carousel {
 
   onChange(index) {
     console.log(`Changed index to ${index}`);
-    player.src({
-      src: 'https://d11gqohmu80ljn.cloudfront.net/637/384415_19d188634f44db3147cbab020fc3c19c/mpds/384415.mpd?cb=1473777901',
-      type: 'application/dash+xml',
-      keySystemOptions: [
-        {
-          name: 'com.widevine.alpha',
-          options: {
-            serverURL: 'https://proxy-dev.tbxdrm.com/v1/drm-proxy/widevine/modular/tbxnet?contentId=aa07f498-c27d-4ae2-ad02-5c2518504cfa'
-          }
+    const externalApi = this.options && this.options.externalApi;
+    const url = externalApi.url
+      .replace('{contentId}', this.channels[index].id)
+      .replace('{network}', this.channels[index].network);
+    const options = {
+      method: externalApi.method || 'GET',
+      qs: externalApi.qs || null,
+      // body: JSON.stringify(externalApi.body),
+      headers: externalApi.headers,
+      json: true
+    }
+
+    fetch(url, options)
+      .then(result => {
+        if (result.ok) {
+          return result.json();
         }
-      ]
-    });
-    player.play();
+        // console.error(`vjs-zapping: ${JSON.stringify(error)}`);
+      })
+      .then(response => {
+        player.src(response);
+      });
   }
 
-  onStaticClick( event, pointer, cellElement, cellIndex ) {
-    if ( typeof cellIndex == 'number' ) {
-      this.flickity.selectCell( cellIndex );
+  onStaticClick(event, pointer, cellElement, cellIndex) {
+    if (typeof cellIndex == 'number') {
+      this.flickity.selectCell(cellIndex);
     }
   }
 

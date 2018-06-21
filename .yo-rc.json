@@ -2,13 +2,13 @@
   "generator-videojs-plugin": {
     "scope": "",
     "name": "zapping",
-    "description": "zapping plugin for videojs",
+    "description": "",
     "author": "Luciano <lribelle@toolboxtve.com>",
-    "license": "private",
-    "sass": false,
-    "ie8": false,
+    "license": "apache2",
+    "pluginType": "advanced",
+    "css": true,
     "docs": true,
-    "lang": false,
-    "husky": "none"
+    "lang": true,
+    "husky": "lint"
   }
 }

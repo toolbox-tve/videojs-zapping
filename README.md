@@ -1,6 +1,6 @@
 # videojs-zapping
 
-zapping plugin for videojs
+
 
 ## Table of Contents
 
@@ -61,7 +61,7 @@ require(['video.js', 'videojs-zapping'], function(videojs) {
 
 ## License
 
-UNLICENSED. Copyright (c) Luciano &lt;lribelle@toolboxtve.com&gt;
+Apache-2.0. Copyright (c) Luciano &lt;lribelle@toolboxtve.com&gt;
 
 
 [videojs]: http://videojs.com/

@@ -1,3 +1,13 @@
+/**
+ * css for videojs-zapping
+ * postcss allows you to
+ * - @import relative files, they will be inlined during build
+ * - not have to worry about prefixes, as the last 2 versions of all major browsers
+ *   and ie 11 will be automatically prefixed
+ */
+
+@import '../node_modules/flickity/dist/flickity.min.css';
+
 .vjs-zapping-holder {
   position: absolute;
   width: 100%;
@@ -29,12 +39,13 @@
   position: relative;
 }
 
-.vjs-default-skin .vjs-zapping-button {
+.vjs-zapping-button {
+  line-height: 3em;
   cursor: pointer;
 }
 
 .vjs-zapping-button:before {
-  content: "\e00d";
+  content: "Zap";
 }
 
 .vjs-user-inactive.vjs-playing .vjs-fade-out {
@@ -62,13 +73,13 @@
 }
 
 .icon-videojs-carousel-toggle:before {
-  content: "\f039";
+  content: "Zap";
 }
 .icon-videojs-carousel-left:before {
-  content: "\f053";
+  content: "Zap";
 }
 .icon-videojs-carousel-right:before {
-  content: "\f054";
+  content: "Zap";
 }
 
 * { box-sizing: border-box; }
