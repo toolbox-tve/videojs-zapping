@@ -82,9 +82,11 @@ class Carousel {
         }
         // console.error(`vjs-zapping: ${JSON.stringify(error)}`);
       })
-      .then(response => {
-        player.src(response);
-      });
+      .then(this.onFetchSuccess.bind(this));
+  }
+
+  onFetchSuccess(response) {
+    this.player.src(response);
   }
 
   onStaticClick(event, pointer, cellElement, cellIndex) {

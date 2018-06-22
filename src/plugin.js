@@ -54,7 +54,7 @@ const defaults = {
     url: "https://unity-dev.tbxapis.com/v0/contents/{contentId}/url?network={network}",
     headers: {
       Accept: 'application/json',
-      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1kZXYudGJ4YXBpcy5jb20iLCJpYXQiOjE1Mjk0Mjk0NDIsImV4cCI6MTUyOTYwMjI0MiwiY291bnRyeSI6IkFSIiwibGFuZ3VhZ2UiOiJlbiIsImNsaWVudCI6IjE4MGRmZjBhZDBlZjRlMTJkZDJjZGIyOWU0NzM2MDY4IiwiZGV2aWNlIjoiN2U4MDdiYWM4NDJhYTQ3MDNiZTIyYjQwYmNiZGNjNzgzM2E4N2VlNiIsImluZGV4IjoiNTc1MTllNDJiY2FlYWVjMTJkNjI0NTUxIiwiY3VzdG9tZXIiOiI1N2YyYTVhZjBmODcyOTg1N2VlMDUxZjgifQ.bgeiIPFynKLXfzKlsb_nsrbHz_q8AtGNF1y3q7t5jkw'
+      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1kZXYudGJ4YXBpcy5jb20iLCJpYXQiOjE1Mjk2ODIwNzUsImV4cCI6MTUyOTg1NDg3NSwiY291bnRyeSI6IkFSIiwibGFuZ3VhZ2UiOiJlbiIsImNsaWVudCI6IjE4MGRmZjBhZDBlZjRlMTJkZDJjZGIyOWU0NzM2MDY4IiwiZGV2aWNlIjoiZGRhNzZkZjdhZTVmYWFkNDJkMjVmY2UxZTdjZDY2YmMwOWVhYzBlNyIsImluZGV4IjoiNTc1MTllNDJiY2FlYWVjMTJkNjI0NTUxIiwiY3VzdG9tZXIiOiI1N2YyYTVhZjBmODcyOTg1N2VlMDUxZjgifQ.eFrqKVLs50bPIqHzaPoS7LiviPlFEUjJfG0mi8PLP-4'
     },
     qs: { network: 'tbx' },
     body: {}
