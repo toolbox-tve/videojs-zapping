@@ -68,6 +68,13 @@ class Carousel {
 
   onChange(index) {
     console.log(`Changed index to ${index}`);
+    // Abort other fetch
+    if (this.abortController) {
+      this.abortController.abort()
+    }
+    // New Abort controller
+    this.abortController = new AbortController();
+
     const externalApi = this.options && this.options.externalApi;
     const networkData = this.channels[index].networks && this.channels[index].networks[0];
     const url = externalApi.url
@@ -78,7 +85,7 @@ class Carousel {
       qs: externalApi.qs || null,
       // body: JSON.stringify(externalApi.body),
       headers: externalApi.headers,
-      json: true
+      signal: this.abortController.signal
     }
 
     fetch(url, options)
@@ -90,7 +97,10 @@ class Carousel {
         throw Error(`Zapping error ${result.error}`);
         // console.error(`vjs-zapping: ${JSON.stringify(error)}`);
       })
-      .then(this.onFetchSuccess.bind(this));
+      .then(this.onFetchSuccess.bind(this))
+      .catch(error => {
+        console.log('Fetch ERROR: ', error);
+      });
   }
 
   onFetchSuccess(response) {
