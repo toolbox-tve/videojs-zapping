@@ -27,6 +27,11 @@ class Carousel {
     this.player.carousel.buildCarousel();
 
     this.flickity = new Flickity('.vjs-zapping-viewport', { wrapAround: false, pageDots: false });
+
+    // Find index of playing channel
+    const selectIndex = this.options.channels.findIndex(channel => channel.id === this.options.defaultChannelId);
+    this.flickity.select(selectIndex);
+
     this.setEventHandlers();
   }
 
@@ -64,9 +69,10 @@ class Carousel {
   onChange(index) {
     console.log(`Changed index to ${index}`);
     const externalApi = this.options && this.options.externalApi;
+    const networkData = this.channels[index].networks && this.channels[index].networks[0];
     const url = externalApi.url
       .replace('{contentId}', this.channels[index].id)
-      .replace('{network}', this.channels[index].network);
+      .replace('{network}', networkData.network);
     const options = {
       method: externalApi.method || 'GET',
       qs: externalApi.qs || null,
@@ -80,13 +86,29 @@ class Carousel {
         if (result.ok) {
           return result.json();
         }
+        // TODO: throw error
+        throw Error(`Zapping error ${result.error}`);
         // console.error(`vjs-zapping: ${JSON.stringify(error)}`);
       })
       .then(this.onFetchSuccess.bind(this));
   }
 
   onFetchSuccess(response) {
-    this.player.src(response);
+    if(!response.content || !response.entitlements) {
+      // TODO: throw error
+      return;
+    }
+
+    const content = Object.assign({}, response.content);
+
+    content.entitlements = [...response.entitlements];
+
+    const instance = TbxPlayer.PlayerBuilder.init(playerConfig.element, content)
+      .setPlayerConfig(playerConfig.player)
+      .setTechsConfig(playerConfig.techs)
+      .setPluginsConfig(playerConfig.plugins);
+
+    instance.build();
   }
 
   onStaticClick(event, pointer, cellElement, cellIndex) {
@@ -134,10 +156,11 @@ class Carousel {
 
   buildCarousel() {
     for (let i = 0; i < this.channels.length; i++) {
-      let img = document.createElement('img');
-      img.src = this.channels[i].imageSrc;
+      const img = document.createElement('img');
+      const imgData = this.channels[i].images && this.channels[i].images[0];
+      img.src = imgData && imgData.url;
       img.className = 'carousel-img';
-      img.alt = this.channels[i].network;
+      img.alt = this.channels[i].network && this.channels[i].network[0].network;
 
       this.viewport.appendChild(img);
     }
