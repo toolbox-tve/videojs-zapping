@@ -123,7 +123,8 @@ body { font-family: sans-serif; }
   font-size: 2em;
   max-height: 114px;
   max-width: 200px;
-  word-wrap: break-word;
+  min-width: 200px;
+  word-wrap: normal;
 }
 
 .carousel-div {

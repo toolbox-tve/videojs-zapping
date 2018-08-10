@@ -10,11 +10,12 @@ const Plugin = videojs.getPlugin('plugin');
 const defaults = {
   channels: channels,
   defaultChannelId: '5b295933adcc7d4d15ec9e5f',
+  button: false,
   externalApi: {
     url: "https://unity-dev.tbxapis.com/v0/contents/{contentId}/url?network={network}",
     headers: {
       Accept: 'application/json',
-      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1kZXYudGJ4YXBpcy5jb20iLCJpYXQiOjE1Mjk5NDE0MjksImV4cCI6MTUzMDExNDIyOSwiY291bnRyeSI6IkFSIiwibGFuZ3VhZ2UiOiJlbiIsImNsaWVudCI6IjE4MGRmZjBhZDBlZjRlMTJkZDJjZGIyOWU0NzM2MDY4IiwiZGV2aWNlIjoiMDk3ZWZmMGFjYWJkZjExZGRhOWNjODI2MzM2NjRmZDdmMzNjMmY4NSIsImluZGV4IjoiNTc1MTllNDJiY2FlYWVjMTJkNjI0NTUxIiwiY3VzdG9tZXIiOiI1N2YyYTVhZjBmODcyOTg1N2VlMDUxZjgiLCJtYXhSYXRpbmciOjQsInByb2ZpbGUiOiI1OGMwNjlkMmM3NmJjNDIwMDBiMTQ4YjIifQ.PR1nDagEetlpvfFNiQxi8y7Gz7blyMkSOcNBmsd1z_A'
+      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1kZXYudGJ4YXBpcy5jb20iLCJpYXQiOjE1MzIxMTA5MzgsImV4cCI6MTUzMjI4MzczOCwiY291bnRyeSI6IkFSIiwibGFuZ3VhZ2UiOiJlbiIsImNsaWVudCI6IjE4MGRmZjBhZDBlZjRlMTJkZDJjZGIyOWU0NzM2MDY4IiwiZGV2aWNlIjoiM2NlY2MyZTgyODBiMDM3ODAyNmUxOTI2NWFhMDc0NTFhYWEzZjYzMyIsImluZGV4IjoiNTc1MTllNDJiY2FlYWVjMTJkNjI0NTUxIiwiY3VzdG9tZXIiOiI1N2YyYTVhZjBmODcyOTg1N2VlMDUxZjgiLCJtYXhSYXRpbmciOjQsInByb2ZpbGUiOiI1OGMwNjlkMmM3NmJjNDIwMDBiMTQ4YjIifQ.Mj9EDcKz3xCk9UsWwtmsD0jw1LLh6hh5mBmPDCY7prM'
     },
     qs: { network: 'tbx' },
     body: {}

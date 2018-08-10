@@ -9,7 +9,10 @@ class Carousel {
     this.options = options;
 
     this.controlBarButton = document.createElement('div');
-    this.controlBarButton.className = 'vjs-button vjs-control vjs-zapping-button icon-videojs-carousel-toggle';
+    this.controlBarButton.className = 'vjs-button vjs-control vjs-zapping-button icon-videojs-carousel-toggle vjs-hidden';
+    if (options.button) {
+      this.controlBarButton.classList.remove('vjs-hidden');
+    }
 
     this.holderDiv = document.createElement('div');
     this.holderDiv.className = 'vjs-zapping-holder';
@@ -39,21 +42,17 @@ class Carousel {
   }
 
   open() {
-    if (!this.isOpen) {
-      if (!this.holderDiv.className.match(/(?:^|\s)active(?!\S)/g)) {
-        this.holderDiv.className = `${this.holderDiv.className} active`;
-      }
+    if (!this.holderDiv.className.match(/(?:^|\s)active(?!\S)/g)) {
+      this.holderDiv.className = `${this.holderDiv.className} active`;
+      this.isOpen = true;
     }
-    this.isOpen = true;
   }
 
   close() {
-    if (this.isOpen) {
-      if (this.holderDiv.className.match(/(?:^|\s)active(?!\S)/g)) {
+    if (this.holderDiv.className.match(/(?:^|\s)active(?!\S)/g)) {
         this.holderDiv.className = this.holderDiv.className.replace(/(?:^|\s)active(?!\S)/g, '');
-      }
+        this.isOpen = false;
     }
-    this.isOpen = false;
   }
 
   toggle() {
@@ -145,12 +144,20 @@ class Carousel {
 
   onUserInactive() {
     // console.log('userinactive');
-    if (this.isDragging) {
+    /* if (this.isDragging) {
       this.userActive(true);
     } else if (this.draggingEnded) {
       this.userActive(true);
       this.draggingEnded = false;
+    } */
+    if (!this.player.paused()) {
+      this.close();
     }
+  }
+
+  onUserActive() {
+    this.open();
+    this.flickity.resize();
   }
 
   setEventHandlers() {
@@ -161,8 +168,9 @@ class Carousel {
     this.flickity.on('dragEnd', this.onDragEnd.bind(this));
 
     /* Videojs player handlers */
-    this.player.on('userinactive', this.onUserInactive);
-
+    this.player.on('userinactive', this.onUserInactive.bind(this));
+    this.player.one('mouseover', this.onUserActive.bind(this));
+    this.player.on('useractive', this.onUserActive.bind(this));
     /* Button handlers */
     this.controlBarButton.onclick = this.onButtonClick.bind(this);
   }
