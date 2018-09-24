@@ -79,9 +79,12 @@ class Carousel {
     const externalApi = this.options && this.options.externalApi;
     const networkData = this.channels[index].networks && this.channels[index].networks[0];
     const network = networkData && networkData.network;
+    const liveProgressBar = this.channels[index].hasCatchUp && this.options.liveProgressBar;
     const url = externalApi.url
       .replace('{contentId}', this.channels[index].id)
-      .replace('{network}', network);
+      .replace('{network}', network)
+      .replace('{liveProgressBar}', liveProgressBar);
+
     const options = {
       method: externalApi.method || 'GET',
       qs: externalApi.qs || null,
@@ -114,6 +117,10 @@ class Carousel {
     const content = Object.assign({}, response.content);
 
     content.entitlements = [...response.entitlements];
+
+    const playerConfig = TbxPlayer.PlayerBuilder._configData;
+
+    playerConfig.element = TbxPlayer.PlayerBuilder._element;
 
     const instance = TbxPlayer.PlayerBuilder.init(playerConfig.element, content)
       .setPlayerConfig(playerConfig.player)

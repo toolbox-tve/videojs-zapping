@@ -63,7 +63,7 @@
     "global": "^4.3.2",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "video.js": "6.10.2 || ^7.0.3"
+    "video.js": "^5"
   },
   "devDependencies": {
     "autoprefixer": "^8.6.0",
