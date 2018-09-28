@@ -9,13 +9,13 @@ import channels from './channels.json';
 const defaults = {
   liveProgressBar: true,
   channels: channels,
-  defaultChannelId: '599c2cc301e490609d186d9b',
+  defaultChannelId: '',
   button: false,
   externalApi: {
-    url: "https://unity-cert.tbxapis.com/v0/contents/{contentId}/url?liveProgressBar={liveProgressBar}&network={network}",
+    url: "https://unity-cert.tbxapis.com/v0",
     headers: {
       Accept: 'application/json',
-      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1jZXJ0LnRieGFwaXMuY29tIiwiaWF0IjoxNTM3ODA0MTkwLCJleHAiOjE1Mzc5NzY5OTAsImNvdW50cnkiOiJQQSIsImxhbmd1YWdlIjoiZW4iLCJjbGllbnQiOiI5ODRiYTA3MWIwYjYyZjdlNDIzODNmNzhhMWUzNTBlNyIsImRldmljZSI6IjAzZDY5MGFlYjBiOTRiN2RmYzdmNGFlNjEwZTY3ZDQzYTdiNzFkNTAiLCJpbmRleCI6IjU4YmVhZDJiOTlhYzNiMmY4OTEzZTczYSIsImN1c3RvbWVyIjoiNTZhODFlYjE1MDY0ZDQxODA1YWZiOTljIiwibWF4UmF0aW5nIjo0LCJwcm9maWxlIjoiNTk2ZmU1YWIzNTQ3MTkyMDAwNTE0N2U5In0.OZceSOcJg1bn7oGDIzP9443mJZ0o--IZRTLl2WcDfic'
+      Authorization: ''
     },
     qs: { network: 'tbx' },
     body: {}

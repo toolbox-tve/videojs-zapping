@@ -17,6 +17,7 @@ class Carousel {
     this.holderDiv = document.createElement('div');
     this.holderDiv.className = 'vjs-zapping-holder';
 
+
     this.viewport = document.createElement('div');
     this.viewport.className = 'vjs-zapping-viewport';
 
@@ -31,7 +32,7 @@ class Carousel {
     this.player.carousel.holderDiv.appendChild(this.viewport);
     this.player.carousel.buildCarousel();
 
-    this.flickity = new Flickity('.vjs-zapping-viewport', { wrapAround: false, pageDots: false });
+    this.flickity = new Flickity('.vjs-zapping-viewport', { wrapAround: false, pageDots: false, imagesLoaded: true });
 
     // Find index of playing channel
     const selectIndex = this.options.channels.findIndex(channel => channel.id === this.options.defaultChannelId);
@@ -42,10 +43,16 @@ class Carousel {
   }
 
   open() {
+    // if casting a content disable zapping
+    if (this.player.chromecast && this.player.chromecast.casting) {
+      return;
+    }
+
     if (!this.holderDiv.className.match(/(?:^|\s)active(?!\S)/g)) {
       this.holderDiv.className = `${this.holderDiv.className} active`;
       this.isOpen = true;
     }
+    this.flickity.resize();
   }
 
   close() {
@@ -69,6 +76,10 @@ class Carousel {
   }
 
   onChange(index) {
+    // Keep the ui active
+    this.isChanging = true;
+    // console.log('onChange - active');
+
     // Abort other fetch
     if (this.abortController) {
       this.abortController.abort();
@@ -79,11 +90,10 @@ class Carousel {
     const externalApi = this.options && this.options.externalApi;
     const networkData = this.channels[index].networks && this.channels[index].networks[0];
     const network = networkData && networkData.network;
+    this.nextChannel = this.channels[index];
     const liveProgressBar = this.channels[index].hasCatchUp && this.options.liveProgressBar;
-    const url = externalApi.url
-      .replace('{contentId}', this.channels[index].id)
-      .replace('{network}', network)
-      .replace('{liveProgressBar}', liveProgressBar);
+    const contentId = this.channels[index].id;
+    const url = `${externalApi.url}/contents/${contentId}/url?liveProgressBar=${liveProgressBar}&network=${network}`;
 
     const options = {
       method: externalApi.method || 'GET',
@@ -122,6 +132,11 @@ class Carousel {
 
     playerConfig.element = TbxPlayer.PlayerBuilder._element;
 
+    playerConfig.contentData = TbxPlayer.PlayerBuilder._contentData;
+
+    content.country = playerConfig.contentData.country;
+    this.player.poster(this.nextChannel.images[0].url);
+
     const instance = TbxPlayer.PlayerBuilder.init(playerConfig.element, content)
       .setPlayerConfig(playerConfig.player)
       .setTechsConfig(playerConfig.techs)
@@ -138,33 +153,59 @@ class Carousel {
 
   onDragStart(event, pointer) {
     // console.log('dragStart');
-    this.player.isDragging = true;
+    this.isDragging = true;
     this.player.userActive(true);
   }
 
   onDragEnd(event, pointer) {
     // console.log('dragEnd');
     this.player.userActive(true);
-    this.player.isDragging = false;
-    this.player.draggingEnded = true;
+    this.isDragging = false;
+    this.draggingEnded = true;
   }
 
   onUserInactive() {
     // console.log('userinactive');
-    /* if (this.isDragging) {
-      this.userActive(true);
+    if (this.isDragging) {
+      this.player.userActive(true);
     } else if (this.draggingEnded) {
-      this.userActive(true);
+      this.player.userActive(true);
       this.draggingEnded = false;
-    } */
-    if (!this.player.paused()) {
+    } else if (this.isChanging) {
+      this.player.userActive(true);
+      this.isChanging = false;
+    } else if (this.canClose) {
+      this.canClose = false;
       this.close();
+    } else if (!this.player.paused()) {
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+        this.timeoutId = false;
+      }
+
+      this.timeoutId = setTimeout(() => {
+        // console.log('timeout');
+        this.canClose = true;
+      }, 3000);
     }
   }
 
   onUserActive() {
-    this.open();
+    if (!this.isOpen) {
+      this.flickity.resize();
+      this.open();
+    }
+  }
+
+  resize() {
+    if (!this.isOpen){
+      this.flickity.resize();
+    }
+  }
+
+  firstOpen() {
     this.flickity.resize();
+    setTimeout(this.open.bind(this), 1000);
   }
 
   setEventHandlers() {
@@ -176,8 +217,12 @@ class Carousel {
 
     /* Videojs player handlers */
     this.player.on('userinactive', this.onUserInactive.bind(this));
-    this.player.one('mouseover', this.onUserActive.bind(this));
+    this.player.one('mouseover', this.firstOpen.bind(this));
+    this.player.on('timeupdate', this.resize.bind(this));
     this.player.on('useractive', this.onUserActive.bind(this));
+    this.player.on('startcast', this.close.bind(this));
+    this.player.on('stopcast', this.open.bind(this));
+
     /* Button handlers */
     this.controlBarButton.onclick = this.onButtonClick.bind(this);
   }
@@ -185,17 +230,17 @@ class Carousel {
   buildCarousel() {
     for (let i = 0; i < this.channels.length; i++) {
       const div = document.createElement('div');
-      div.className = 'carousel-div';
+      div.className = 'zapping-carousel-div';
 
       const img = document.createElement('img');
       const imgData = this.channels[i].images && this.channels[i].images[0];
       img.src = imgData && imgData.url;
-      img.className = 'carousel-img';
+      img.className = 'zapping-carousel-img';
       img.alt = this.channels[i].network && this.channels[i].network[0].network;
 
       // Title default[display: none]
       const text = document.createElement('p');
-      text.className = 'carousel-p vjs-hidden';
+      text.className = 'zapping-carousel-p vjs-hidden';
       text.innerHTML = this.channels[i].title;
 
       // on image error hides image and shows title with videojs css class vjs-hidden
