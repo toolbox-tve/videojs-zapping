@@ -8,10 +8,14 @@
 
 @import '../node_modules/flickity/dist/flickity.min.css';
 
+html {
+  --zapping-selected-color: rgba(20, 101, 30, 0.7);
+}
+
 .vjs-zapping-holder {
   position: absolute;
   width: 100%;
-  bottom: 50px;
+  bottom: 35px;
   text-align: center;
   background: rgba(43, 51, 63, 0.75);
 
@@ -109,14 +113,14 @@ body { font-family: sans-serif; }
   color: white;
 }
 
-.carousel-img {
+.zapping-carousel-img {
   margin-left: auto;
   margin-right: auto;
   display: block;
   max-height: 114px;
 }
 
-.carousel-p{
+.zapping-carousel-p{
   margin-left: 5px;
   margin-right: 5px;
   display: block;
@@ -125,17 +129,20 @@ body { font-family: sans-serif; }
   max-width: 200px;
   min-width: 200px;
   word-wrap: normal;
+  height: 114px;
+  display: table-cell;
+  vertical-align: middle;
 }
 
-.carousel-div {
+.zapping-carousel-div {
   position: relative;
   text-align: center;
 }
 
-.carousel-div.is-selected::after {
-  -webkit-box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
-  -moz-box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
-  box-shadow:inset 0px 0px 0px 3px rgba(224, 101, 30, 0.7);
+.zapping-carousel-div.is-selected::after {
+  -webkit-box-shadow:inset 0px 0px 0px 3px var(--zapping-selected-color);
+  -moz-box-shadow:inset 0px 0px 0px 3px var(--zapping-selected-color);
+  box-shadow:inset 0px 0px 0px 3px var(--zapping-selected-color);
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -151,7 +158,7 @@ body { font-family: sans-serif; }
   width: 100%;
 }
 
-.carousel-div.is-selected img {
+.zapping-carousel-div.is-selected img {
   background: rgba(43, 51, 63, 0.85);
 }
 

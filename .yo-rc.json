@@ -3,12 +3,14 @@
     "scope": "",
     "name": "zapping",
     "description": "",
-    "author": "Luciano <lribelle@toolboxtve.com>",
+    "author": "Toolbox-tve",
     "license": "apache2",
-    "pluginType": "advanced",
+    "pluginType": "basic",
     "css": true,
     "docs": true,
     "lang": true,
-    "husky": "lint"
+    "husky": "lint",
+    "precommit": false,
+    "prepush": false
   }
 }

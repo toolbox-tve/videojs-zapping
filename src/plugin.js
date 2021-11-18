@@ -1,68 +1,73 @@
 import videojs from 'video.js';
 import {version as VERSION} from '../package.json';
+
 import Carousel from './Carousel/Carousel';
 
 import channels from './channels.json';
 
-const Plugin = videojs.getPlugin('plugin');
-
 // Default options for the plugin.
 const defaults = {
+  liveProgressBar: true,
   channels: channels,
-  defaultChannelId: '5b295933adcc7d4d15ec9e5f',
+  defaultChannelId: '',
   button: false,
   externalApi: {
-    url: "https://unity-dev.tbxapis.com/v0/contents/{contentId}/url?network={network}",
+    url: "https://unity-cert.tbxapis.com/v0",
     headers: {
       Accept: 'application/json',
-      Authorization: 'JWT eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUb29sYm94IERpZ2l0YWwgU0EiLCJhdWQiOiJ1bml0eS1kZXYudGJ4YXBpcy5jb20iLCJpYXQiOjE1MzIxMTA5MzgsImV4cCI6MTUzMjI4MzczOCwiY291bnRyeSI6IkFSIiwibGFuZ3VhZ2UiOiJlbiIsImNsaWVudCI6IjE4MGRmZjBhZDBlZjRlMTJkZDJjZGIyOWU0NzM2MDY4IiwiZGV2aWNlIjoiM2NlY2MyZTgyODBiMDM3ODAyNmUxOTI2NWFhMDc0NTFhYWEzZjYzMyIsImluZGV4IjoiNTc1MTllNDJiY2FlYWVjMTJkNjI0NTUxIiwiY3VzdG9tZXIiOiI1N2YyYTVhZjBmODcyOTg1N2VlMDUxZjgiLCJtYXhSYXRpbmciOjQsInByb2ZpbGUiOiI1OGMwNjlkMmM3NmJjNDIwMDBiMTQ4YjIifQ.Mj9EDcKz3xCk9UsWwtmsD0jw1LLh6hh5mBmPDCY7prM'
+      Authorization: ''
     },
     qs: { network: 'tbx' },
     body: {}
   }
 };
 
+// Cross-compatibility for Video.js 5 and 6.
+const registerPlugin = videojs.registerPlugin || videojs.plugin;
+// const dom = videojs.dom || videojs;
+
 /**
- * An advanced Video.js plugin. For more information on the API
+ * Function to invoke when the player is ready.
  *
- * See: https://blog.videojs.com/feature-spotlight-advanced-plugins/
+ * This is a great place for your plugin to initialize itself. When this
+ * function is called, the player will have its DOM and child components
+ * in place.
+ *
+ * @function onPlayerReady
+ * @param    {Player} player
+ *           A Video.js player object.
+ *
+ * @param    {Object} [options={}]
+ *           A plain object containing options for the plugin.
  */
-class Zapping extends Plugin {
+const onPlayerReady = (player, options) => {
+  player.addClass('vjs-zapping');
+  player.carousel = new Carousel(player, options);
+  player.carousel.init();
+};
 
-  /**
-   * Create a Zapping plugin instance.
-   *
-   * @param  {Player} player
-   *         A Video.js Player instance.
-   *
-   * @param  {Object} [options]
-   *         An optional options object.
-   *
-   *         While not a core part of the Video.js plugin architecture, a
-   *         second argument of options is a convenient way to accept inputs
-   *         from your plugin's caller.
-   */
-  constructor(player, options) {
-    // the parent class will add player under this.player
-    super(player);
-
-    this.options = videojs.mergeOptions(defaults, options);
-
-    this.player.ready(() => {
-      this.player.addClass('vjs-zapping');
-      player.carousel = new Carousel(this.player, this.options);
-      player.carousel.init();
-    });
-  }
-}
-
-// Define default values for the plugin's `state` object here.
-Zapping.defaultState = {};
-
-// Include the version number.
-Zapping.VERSION = VERSION;
+/**
+ * A video.js plugin.
+ *
+ * In the plugin function, the value of `this` is a video.js `Player`
+ * instance. You cannot rely on the player being in a "ready" state here,
+ * depending on how the plugin is invoked. This may or may not be important
+ * to you; if not, remove the wait for "ready"!
+ *
+ * @function zapping
+ * @param    {Object} [options={}]
+ *           An object of options left to the plugin author to define.
+ */
+const zapping = function(options) {
+  this.ready(() => {
+    onPlayerReady(this, videojs.mergeOptions(defaults, options));
+  });
+};
 
 // Register the plugin with video.js.
-videojs.registerPlugin('zapping', Zapping);
+registerPlugin('zapping', zapping);
 
-export default Zapping;
+// Include the version number.
+zapping.VERSION = VERSION;
+
+export default zapping;
